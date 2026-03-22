@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "Client": {
+      "title": "Client",
+      "description": "Customer information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the client" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "address": { "type": "string", "description": "Physical address" },
+        "uid": { "type": "string", "description": "Owner's user ID" }
+      },
+      "required": ["name", "uid"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Billing document",
+      "type": "object",
+      "properties": {
+        "number": { "type": "string", "description": "Invoice number" },
+        "clientId": { "type": "string", "description": "Reference to client ID" },
+        "date": { "type": "string", "format": "date", "description": "Issue date" },
+        "dueDate": { "type": "string", "format": "date", "description": "Due date" },
+        "items": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "quantity": { "type": "number" },
+              "unitPrice": { "type": "number" }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["draft", "sent", "paid", "overdue"] },
+        "taxRate": { "type": "number" },
+        "discount": { "type": "number" },
+        "total": { "type": "number" },
+        "uid": { "type": "string", "description": "Owner's user ID" }
+      },
+      "required": ["number", "clientId", "uid"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "To-do item",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] },
+        "dueDate": { "type": "string", "format": "date" },
+        "uid": { "type": "string", "description": "Owner's user ID" }
+      },
+      "required": ["title", "uid"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Simple text note",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "uid": { "type": "string", "description": "Owner's user ID" }
+      },
+      "required": ["title", "uid"]
+    },
+    "User": {
+      "title": "User Profile",
+      "description": "User account and trial information",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "trialStartedAt": { "type": "string", "format": "date-time" },
+        "isTrialActive": { "type": "boolean" }
+      }
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "User application settings",
+      "type": "object",
+      "properties": {
+        "company": { "type": "object" },
+        "legal": { "type": "object" },
+        "bank": { "type": "object" },
+        "docs": { "type": "object" },
+        "branding": { "type": "object" },
+        "stock": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/settings/{userId}": {
+      "schema": "Settings",
+      "description": "User settings"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "User's products and services"
+    },
+    "/platform_users/{userId}": {
+      "schema": "User",
+      "description": "Platform users managed by the account owner"
+    },
+    "/clients/{clientId}": {
+      "schema": "Client",
+      "description": "User's clients"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "User's invoices"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "User's tasks"
+    },
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "User's notes"
+    },
+    "/devis/{devisId}": {
+      "schema": "Invoice",
+      "description": "User's quotes"
+    },
+    "/purchase_orders/{orderId}": {
+      "schema": "Invoice",
+      "description": "User's purchase orders"
+    },
+    "/delivery_notes/{noteId}": {
+      "schema": "Invoice",
+      "description": "User's delivery notes"
+    },
+    "/receipts/{receiptId}": {
+      "schema": "Invoice",
+      "description": "User's receipts"
+    },
+    "/credit_notes/{noteId}": {
+      "schema": "Invoice",
+      "description": "User's credit notes"
+    }
+  }
+}
